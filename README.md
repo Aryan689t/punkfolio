@@ -9,7 +9,7 @@
   ╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝ 
 ```
 
-### ⚡ HIGH-PERFORMANCE CYBERPUNK DEVELOPER PORTFOLIO ⚡
+### ⚡ CYBERPUNK STYLE PORTFOLIO ⚡
 *“Building a better tomorrow, one commit at a time.”*
 
 <br/>
