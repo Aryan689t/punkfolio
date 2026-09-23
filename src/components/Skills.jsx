@@ -176,10 +176,10 @@ const Skills = ({ onNavigateBack }) => {
     : skillsData.filter((s) => s.category === activeCategory);
 
   return (
-    <div className="relative z-20 w-full max-w-6xl mx-auto px-3 sm:px-6 py-2 select-none flex flex-col justify-center">
+    <div className="relative z-20 w-full max-w-6xl mx-auto px-2.5 sm:px-6 py-1 sm:py-2 select-none flex flex-col justify-center">
       
       {/* Holographic Matrix Backdrop Panel for Crisp Readability */}
-      <div className="relative bg-[#060913]/90 border border-cyan-500/25 rounded-xl p-3 sm:p-5 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.95)]">
+      <div className="relative w-full bg-[#060913]/90 border border-cyan-500/25 rounded-xl p-2.5 sm:p-5 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.95)]">
         
         {/* Cyber Corner Frame Accents */}
         <div className="absolute -top-[1px] -left-[1px] w-3 h-3 border-t-2 border-l-2 border-cyan-400" />
@@ -188,8 +188,8 @@ const Skills = ({ onNavigateBack }) => {
         <div className="absolute -bottom-[1px] -right-[1px] w-3 h-3 border-b-2 border-r-2 border-cyan-400" />
 
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-3 border-b border-cyan-500/20 pb-2.5">
-          <div className="text-center sm:text-left flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3 mb-2.5 sm:mb-3 border-b border-cyan-500/20 pb-2 sm:pb-2.5">
+          <div className="w-full sm:w-auto text-left flex items-center justify-between sm:justify-start gap-3">
             {onNavigateBack && (
               <button
                 onClick={() => {
@@ -197,20 +197,23 @@ const Skills = ({ onNavigateBack }) => {
                   onNavigateBack();
                 }}
                 onMouseEnter={playHoverSound}
-                className="p-1.5 rounded bg-slate-900 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all cursor-pointer"
+                className="hidden sm:block p-1.5 rounded bg-slate-900 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all cursor-pointer"
                 title="Return to Home"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
             )}
-            <div>
-              <div className="flex items-center justify-center sm:justify-start gap-2 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-pink-500">
+            <div className="w-full sm:w-auto">
+              {/* Desktop-only decorative telemetry labels */}
+              <div className="hidden sm:flex items-center justify-start gap-2 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-pink-500">
                 <span className="font-bold">//</span>
                 <span>CYBERNETIC ARSENAL</span>
                 <span className="text-cyan-400 font-bold">//</span>
                 <span>TECH CAPABILITIES</span>
               </div>
-              <h2 className="font-orbitron font-black text-xl sm:text-2xl tracking-wide text-white drop-shadow-[0_0_12px_rgba(0,240,255,0.6)] flex items-center gap-2 justify-center sm:justify-start">
+              
+              {/* Clean Single-Row Cyberpunk Title on Mobile & Desktop */}
+              <h2 className="font-orbitron font-black text-sm xs:text-base sm:text-2xl tracking-wide text-white drop-shadow-[0_0_12px_rgba(0,240,255,0.6)] flex items-center gap-1.5 sm:gap-2 justify-start whitespace-nowrap">
                 <span className="text-cyan-400">02.</span>
                 <span>SKILLS & ARSENAL</span>
                 <span className="text-pink-500 animate-pulse">_</span>
@@ -219,7 +222,7 @@ const Skills = ({ onNavigateBack }) => {
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 font-mono text-[10px] sm:text-[11px]">
+          <div className="flex items-center justify-start sm:justify-center gap-1.5 font-mono text-[9.5px] sm:text-[11px] overflow-x-auto no-scrollbar w-full sm:w-auto py-0.5 whitespace-nowrap">
             {skillCategories.map((cat) => {
               const Icon = cat.icon;
               const isActive = activeCategory === cat.id;
@@ -231,7 +234,7 @@ const Skills = ({ onNavigateBack }) => {
                     setActiveCategory(cat.id);
                   }}
                   onMouseEnter={playHoverSound}
-                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded transition-all duration-200 border cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded transition-all duration-200 border shrink-0 cursor-pointer ${
                     isActive
                       ? 'bg-pink-500/25 text-pink-300 border-pink-500 shadow-[0_0_12px_rgba(255,0,127,0.5)] font-bold'
                       : 'bg-[#090e1a]/90 text-slate-400 border-cyan-500/20 hover:border-cyan-400/60 hover:text-cyan-300'
@@ -245,38 +248,40 @@ const Skills = ({ onNavigateBack }) => {
           </div>
         </div>
 
-        {/* Skills Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-[50vh] overflow-y-auto pr-1 scrollbar-thin">
+        {/* Skills Cards Grid (2-Column on Mobile, 3 on Tablet, 4 on Desktop) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 max-h-[58vh] sm:max-h-[50vh] overflow-y-auto pr-1 scrollbar-thin">
           {filteredSkills.map((skill) => {
             const IconComponent = skill.icon;
             return (
               <div
                 key={skill.name}
                 onMouseEnter={playHoverSound}
-                className={`group relative bg-[#0a0f1d]/90 border p-3 rounded-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 ${skill.borderClass}`}
+                className={`group relative bg-[#0a0f1d]/90 border p-2.5 sm:p-3 rounded-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between ${skill.borderClass}`}
               >
                 {/* Header: Custom Cyber SVG Icon + Title & Badge */}
-                <div className="flex items-center gap-2.5 mb-2">
-                  <div className="p-1.5 rounded-md bg-black/50 border border-white/10 shrink-0 group-hover:scale-110 transition-transform">
-                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" color={skill.accentColor} />
-                  </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="p-1 sm:p-1.5 rounded-md bg-black/50 border border-white/10 shrink-0 group-hover:scale-110 transition-transform">
+                      <IconComponent className="w-4 h-4 sm:w-6 sm:h-6" color={skill.accentColor} />
+                    </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-orbitron font-bold text-xs sm:text-sm text-white group-hover:text-cyan-300 transition-colors truncate">
-                      {skill.name}
-                    </h3>
-                    <span className={`inline-block font-mono text-[8px] sm:text-[9px] px-1.5 py-0.2 rounded border tracking-wider font-semibold ${skill.badgeClass}`}>
-                      {skill.badge}
-                    </span>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-orbitron font-bold text-[11px] xs:text-xs sm:text-sm text-white group-hover:text-cyan-300 transition-colors truncate">
+                        {skill.name}
+                      </h3>
+                      <span className={`inline-block font-mono text-[7.5px] sm:text-[9px] px-1.5 py-0.2 rounded border tracking-wider font-semibold ${skill.badgeClass}`}>
+                        {skill.badge}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Sub-tags Pill Chips */}
-                <div className="flex flex-wrap gap-1 mt-2">
+                <div className="flex flex-wrap gap-1 mt-1.5">
                   {skill.tags.map((tag, tIdx) => (
                     <span
                       key={tIdx}
-                      className={`font-mono text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded border tracking-tight font-medium ${skill.tagClass}`}
+                      className={`font-mono text-[7.5px] xs:text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded border tracking-tight font-medium ${skill.tagClass}`}
                     >
                       {tag}
                     </span>
