@@ -114,23 +114,23 @@ const Navbar = ({ activeTab = 'home', onSelectTab }) => {
       </div>
 
       {/* Mobile View: Logo + Clock + Hamburger Menu */}
-      <div className="md:hidden flex items-center justify-between w-full">
+      <div className="md:hidden flex items-center justify-between w-full px-1">
         <div 
-          className="flex items-center gap-1 font-orbitron font-bold text-xl tracking-wider text-pink-500 cursor-pointer"
+          className="flex items-center gap-1 font-orbitron font-bold text-lg xs:text-xl tracking-wider text-pink-500 cursor-pointer"
           onClick={() => {
             playClickSound();
             handleTabChange('home');
           }}
         >
-          <span className="text-pink-500 drop-shadow-[0_0_8px_rgba(255,0,127,0.8)]">
+          <span className="text-pink-500 drop-shadow-[0_0_10px_rgba(255,0,127,0.85)]">
             PUNKFOLIO
           </span>
-          <span className="inline-block w-2 h-4 bg-pink-500 animate-pulse" />
+          <span className="inline-block w-2.5 h-4 bg-pink-500 animate-pulse drop-shadow-[0_0_8px_rgba(255,0,127,0.8)]" />
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="font-mono text-right text-xs leading-tight">
-            <div className="text-cyan-300 font-bold text-xs tracking-wider">
+          <div className="font-mono text-right leading-tight">
+            <div className="text-cyan-300 font-bold text-xs xs:text-sm tracking-widest drop-shadow-[0_0_6px_rgba(0,240,255,0.7)]">
               {timeStr || '00:00:00'}
             </div>
           </div>
@@ -140,9 +140,9 @@ const Navbar = ({ activeTab = 'home', onSelectTab }) => {
               playClickSound();
               setMobileMenuOpen(!mobileMenuOpen);
             }}
-            className="text-cyan-400 p-1 border border-cyan-500/30 rounded focus:outline-none"
+            className="text-cyan-400 p-1.5 border border-cyan-500/40 rounded-lg bg-cyan-950/30 hover:border-cyan-400 transition-colors focus:outline-none cursor-pointer"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               ) : (

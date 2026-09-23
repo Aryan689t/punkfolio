@@ -25,6 +25,8 @@ function App() {
       {/* Subtle Atmospheric Gradient Overlay for UI Readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#05070d]/65 via-transparent to-[#05070d]/75 z-[1] pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/25 via-transparent to-[#05070d]/40 z-[1] pointer-events-none" />
+      {/* Mobile Subtle Background Contrast Softener */}
+      <div className="absolute inset-0 bg-black/20 md:bg-transparent z-[1] pointer-events-none" />
 
       {/* Futuristic Scanlines */}
       <div className="absolute inset-0 scanlines opacity-20 pointer-events-none z-[2]" />
@@ -36,7 +38,7 @@ function App() {
       <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
 
       {/* Main Center Content (Dynamic SPA Switch) */}
-      <main className="flex-1 flex items-center justify-center relative z-20 my-auto py-0 w-full overflow-hidden">
+      <main className="flex-1 flex items-center justify-center relative z-20 my-auto py-1 sm:py-2 md:py-0 w-full overflow-y-auto md:overflow-hidden">
         {activeTab === 'home' && (
           <div className="w-full flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
             <Hero onNavigate={setActiveTab} />
