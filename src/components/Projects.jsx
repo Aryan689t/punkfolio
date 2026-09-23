@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ExternalLink, 
   CheckCircle2, 
@@ -91,37 +91,272 @@ const Projects = () => {
 
   const currentRepoStat = selectedProject.githubRepo ? repoStats[selectedProject.githubRepo] : null;
 
+  const projectTouchStart = useRef(null);
+
+  const handleProjectTouchStart = (e) => {
+    projectTouchStart.current = e.touches[0].clientX;
+  };
+
+  const handleProjectTouchEnd = (e) => {
+    if (projectTouchStart.current === null) return;
+    const delta = e.changedTouches[0].clientX - projectTouchStart.current;
+    if (Math.abs(delta) > 40) {
+      if (delta < 0) {
+        // Swiped Left -> Next Project
+        playClickSound();
+        setSelectedIndex((prev) => (prev < projects.length - 1 ? prev + 1 : 0));
+      } else {
+        // Swiped Right -> Prev Project
+        playClickSound();
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : projects.length - 1));
+      }
+    }
+    projectTouchStart.current = null;
+  };
+
   return (
     <div className="w-full max-w-[1700px] mx-auto px-2 sm:px-4 lg:px-6 py-1 flex items-center justify-center select-none text-slate-100 h-full max-h-[calc(100vh-105px)] overflow-y-auto lg:overflow-hidden">
       
-      {/* Symmetrical 3-Column Cyberpunk Layout (Left = Right width => Center is 100% Dead Center) */}
-      <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between w-full gap-3 lg:gap-5 xl:gap-6">
+      {/* ======================================================== */}
+      {/* MOBILE & TABLET LAYOUT (< lg): CINEMATIC SHOWCASE        */}
+      {/* ======================================================== */}
+      <div className="flex lg:hidden flex-col items-center justify-center w-full max-w-md mx-auto py-1">
+        
+        {/* Mobile Section Title & Carousel Navigation Header */}
+        <div className="w-full flex items-center justify-between mb-2 px-1">
+          <div>
+            <h2 className="font-orbitron font-black text-base xs:text-lg sm:text-xl tracking-wide text-white drop-shadow-[0_0_12px_rgba(0,240,255,0.6)] flex items-center gap-1.5">
+              <span className="text-cyan-400">03.</span>
+              <span>PROJECTS</span>
+              <span className="text-pink-500 animate-pulse">_</span>
+            </h2>
+            <p className="font-mono text-[8px] xs:text-[9px] text-slate-400 tracking-widest uppercase">
+              BUILD. SHIP. REPEAT.
+            </p>
+          </div>
+
+          {/* Navigation Controls: ← 01 / 06 → */}
+          <div className="flex items-center gap-2 font-mono bg-black/60 border border-cyan-500/30 px-2.5 py-1 rounded-lg backdrop-blur-md shadow-[0_0_12px_rgba(0,240,255,0.1)]">
+            <button
+              onClick={() => {
+                playClickSound();
+                setSelectedIndex((prev) => (prev > 0 ? prev - 1 : projects.length - 1));
+              }}
+              onMouseEnter={playHoverSound}
+              className="text-cyan-300 hover:text-white hover:scale-125 transition-all active:scale-90 cursor-pointer font-bold text-sm px-1 py-0.5"
+              title="Previous Project"
+              aria-label="Previous Project"
+            >
+              ←
+            </button>
+            <span 
+              className="font-orbitron text-xs font-bold px-1 transition-colors duration-300"
+              style={{ color: selectedProject.statusColor || '#00f0ff' }}
+            >
+              {String(selectedIndex + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+            </span>
+            <button
+              onClick={() => {
+                playClickSound();
+                setSelectedIndex((prev) => (prev < projects.length - 1 ? prev + 1 : 0));
+              }}
+              onMouseEnter={playHoverSound}
+              className="text-cyan-300 hover:text-white hover:scale-125 transition-all active:scale-90 cursor-pointer font-bold text-sm px-1 py-0.5"
+              title="Next Project"
+              aria-label="Next Project"
+            >
+              →
+            </button>
+          </div>
+        </div>
+
+        {/* Single Cohesive Mobile HUD Showcase Card */}
+        <div 
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            handleProjectTouchStart(e);
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+            handleProjectTouchEnd(e);
+          }}
+          className="relative w-full bg-[#060913]/90 border border-cyan-500/30 rounded-xl p-2.5 xs:p-3 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.85)] flex flex-col gap-2 overflow-hidden no-swipe-zone"
+        >
+          {/* Cyber Corner Frame Accents */}
+          <div className="absolute -top-[1px] -left-[1px] w-3 h-3 border-t-2 border-l-2 border-cyan-400 pointer-events-none" />
+          <div className="absolute -top-[1px] -right-[1px] w-3 h-3 border-t-2 border-r-2 border-cyan-400 pointer-events-none" />
+          <div className="absolute -bottom-[1px] -left-[1px] w-3 h-3 border-b-2 border-l-2 border-cyan-400 pointer-events-none" />
+          <div className="absolute -bottom-[1px] -right-[1px] w-3 h-3 border-b-2 border-r-2 border-cyan-400 pointer-events-none" />
+
+          {/* Animated Project Content Container on Project Switch */}
+          <div 
+            key={selectedProject.id || selectedIndex} 
+            className="flex flex-col gap-2 animate-[fadeIn_0.25s_ease-out]"
+          >
+            {/* Top Status & Category HUD Row */}
+            <div className="flex items-center justify-between pb-1.5 border-b border-cyan-500/20 text-[8.5px] font-mono">
+              <div 
+                className="flex items-center gap-1.5 font-bold uppercase tracking-wider"
+                style={{ color: selectedProject.statusColor || '#00ff66' }}
+              >
+                <span 
+                  className="w-1.5 h-1.5 rounded-full animate-pulse"
+                  style={{ 
+                    backgroundColor: selectedProject.statusColor || '#00ff66',
+                    boxShadow: `0 0 6px ${selectedProject.statusColor || '#00ff66'}` 
+                  }} 
+                />
+                <span>{selectedProject.status || 'DEPLOYED'}</span>
+              </div>
+              <span className="px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 font-bold uppercase tracking-wider text-[8px]">
+                {selectedProject.category || 'PROJECT'}
+              </span>
+            </div>
+
+            {/* Large Cinematic Project Preview (55-60% area) */}
+            <div className="w-full relative rounded-lg overflow-hidden min-h-[175px] xs:min-h-[200px] sm:min-h-[230px] flex flex-col justify-center border border-cyan-500/20 bg-black/60">
+              <ProjectVisual project={selectedProject} />
+              <div className="absolute inset-0 scanlines opacity-20 pointer-events-none" />
+            </div>
+
+            {/* Project Details Section */}
+            <div className="flex flex-col gap-1.5 text-left pt-0.5">
+              
+              {/* Title + Category */}
+              <div>
+                <h3 className="font-orbitron font-black text-base xs:text-lg text-white tracking-wider uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.35)] leading-tight">
+                  {selectedProject.displayName || selectedProject.title}
+                </h3>
+                <div 
+                  className="font-mono text-[9px] font-bold tracking-widest uppercase transition-colors"
+                  style={{ color: selectedProject.statusColor || '#ff007f' }}
+                >
+                  {selectedProject.tagline || selectedProject.category || 'AI / FULL-STACK'}
+                </div>
+              </div>
+
+              {/* Short Description (2-3 lines) */}
+              <p className="font-mono text-[9.5px] xs:text-[10px] text-slate-300 leading-snug line-clamp-3">
+                {selectedProject.description}
+              </p>
+
+              {/* Tech Stack Pills */}
+              <div className="flex flex-wrap gap-1 py-0.5">
+                {selectedProject.techStack?.map((tech, i) => (
+                  <span
+                    key={i}
+                    className="font-mono text-[8px] px-1.5 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 font-medium"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Action Buttons: Primary LIVE DEMO + Secondary GITHUB */}
+              <div className="flex flex-col gap-1.5 pt-1.5 border-t border-cyan-500/15">
+                {/* Primary LIVE DEMO button (Dominant Neon Glow) */}
+                {selectedProject.demoUrl && selectedProject.demoUrl !== '#' && (
+                  <a
+                    href={selectedProject.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={playClickSound}
+                    onMouseEnter={playHoverSound}
+                    className="w-full py-2 px-3 rounded-lg font-orbitron font-bold text-xs tracking-wider text-white bg-gradient-to-r from-pink-600 via-pink-500 to-pink-600 border border-pink-400 hover:brightness-110 shadow-[0_0_15px_rgba(255,0,127,0.5)] flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+                  >
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <span>↗ LIVE DEMO</span>
+                  </a>
+                )}
+
+                {/* Secondary VIEW GITHUB button */}
+                {selectedProject.githubUrl && (
+                  <a
+                    href={selectedProject.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={playClickSound}
+                    onMouseEnter={playHoverSound}
+                    className="w-full py-1.5 px-3 rounded-lg font-orbitron font-bold text-[10.5px] tracking-wider text-cyan-300 bg-black/60 hover:bg-cyan-950/40 border border-cyan-500/40 hover:border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.15)] flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+                  >
+                    <GitHubIcon className="w-3.5 h-3.5" />
+                    <span>VIEW GITHUB</span>
+                    {currentRepoStat?.stars > 0 && (
+                      <span className="ml-auto text-[8px] font-mono bg-cyan-950 px-1.5 py-0.2 rounded border border-cyan-500/30 flex items-center gap-0.5">
+                        <Star className="w-2.5 h-2.5 fill-yellow-400 text-yellow-400" />
+                        {currentRepoStat.stars}
+                      </span>
+                    )}
+                  </a>
+                )}
+              </div>
+
+            </div>
+          </div>
+
+          {/* Carousel Indicator Dots: ● ○ ○ ○ ○ ○ with Active Project Neon Accent */}
+          <div className="flex items-center justify-center gap-2 pt-1">
+            {projects.map((proj, idx) => {
+              const isActive = idx === selectedIndex;
+              const activeColor = selectedProject.statusColor || '#00f0ff';
+              return (
+                <button
+                  key={proj.id || idx}
+                  onClick={() => {
+                    playClickSound();
+                    setSelectedIndex(idx);
+                  }}
+                  onMouseEnter={playHoverSound}
+                  style={{
+                    backgroundColor: isActive ? activeColor : 'transparent',
+                    borderColor: isActive ? activeColor : 'rgba(0, 240, 255, 0.4)',
+                    boxShadow: isActive ? `0 0 10px ${activeColor}` : 'none',
+                  }}
+                  className={`h-2 rounded-full border transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? 'w-5'
+                      : 'w-2 bg-transparent hover:border-cyan-300'
+                  }`}
+                  title={`Project ${idx + 1}: ${proj.displayName || proj.title}`}
+                  aria-label={`Go to project ${idx + 1}`}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+      </div>
+
+      {/* ======================================================== */}
+      {/* DESKTOP LAYOUT (lg:flex): EXACT 3-COLUMN ARCHIVE PRESERVED */}
+      {/* ======================================================== */}
+      <div className="hidden lg:flex flex-row items-center justify-between w-full gap-5 xl:gap-6">
         
         {/* ======================================================== */}
         {/* COLUMN 1: LEFT SIDEBAR - ARCHIVE HEADER & SELECTOR       */}
         {/* ======================================================== */}
-        <div className="w-full lg:w-[245px] xl:w-[265px] shrink-0 flex flex-col justify-center space-y-2">
+        <div className="w-[245px] xl:w-[265px] shrink-0 flex flex-col justify-center space-y-2">
           
           {/* Header Section */}
           <div>
-            <div className="flex items-center gap-2 font-mono text-[10px] sm:text-xs tracking-[0.2em] text-cyan-400 mb-0.5">
+            <div className="flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-cyan-400 mb-0.5">
               <span className="text-pink-500 font-bold">//</span>
               <span>PROJECT ARCHIVE</span>
             </div>
 
-            <h2 className="font-orbitron font-black text-lg sm:text-xl xl:text-2xl tracking-tight leading-none mb-1">
+            <h2 className="font-orbitron font-black text-xl xl:text-2xl tracking-tight leading-none mb-1">
               <span className="text-white block">IDEAS</span>
               <span className="text-cyan-400 block drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]">DEPLOYED</span>
               <span className="text-[#ff007f] block drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">INTO REALITY.</span>
             </h2>
 
-            <p className="font-mono text-[9px] sm:text-[10px] text-slate-400 leading-snug max-w-sm mb-1">
+            <p className="font-mono text-[10px] text-slate-400 leading-snug max-w-sm mb-1">
               A collection of projects that solve problems, explore ideas, and push me forward.
             </p>
           </div>
 
           {/* Project Cards Vertical Stack */}
-          <div className="flex flex-col gap-1.5 max-h-[220px] sm:max-h-[250px] lg:max-h-[265px] overflow-y-auto pr-1">
+          <div className="flex flex-col gap-1.5 max-h-[265px] overflow-y-auto pr-1">
             {projects.map((proj, idx) => {
               const isSelected = idx === selectedIndex;
               return (
@@ -181,7 +416,7 @@ const Projects = () => {
 
                   {/* Title & Tagline */}
                   <div className="flex-1 min-w-0">
-                    <div className={`font-orbitron text-[10px] sm:text-[11px] font-bold truncate uppercase tracking-wider transition-colors ${
+                    <div className={`font-orbitron text-[11px] font-bold truncate uppercase tracking-wider transition-colors ${
                       isSelected ? 'text-pink-400 drop-shadow-[0_0_6px_rgba(255,0,127,0.7)]' : 'text-slate-200 group-hover:text-cyan-300'
                     }`}>
                       {proj.displayName || proj.title}
@@ -201,7 +436,7 @@ const Projects = () => {
           </div>
 
           {/* Bottom Left Cyber Terminal Box */}
-          <div className="hidden sm:flex items-center gap-2 bg-black/60 border border-cyan-500/20 p-1.5 rounded-lg backdrop-blur-md font-mono text-[8px]">
+          <div className="flex items-center gap-2 bg-black/60 border border-cyan-500/20 p-1.5 rounded-lg backdrop-blur-md font-mono text-[8px]">
             <div className="w-6 h-6 rounded bg-cyan-950/50 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shrink-0">
               <Terminal className="w-3 h-3 animate-pulse" />
             </div>
@@ -216,7 +451,7 @@ const Projects = () => {
         {/* ======================================================== */}
         {/* COLUMN 2: CENTER HOLOGRAPHIC SCREEN & PEDESTAL           */}
         {/* ======================================================== */}
-        <div className="flex-1 w-full max-w-[700px] xl:max-w-[820px] flex flex-col items-center justify-center min-w-0">
+        <div className="flex-1 max-w-[700px] xl:max-w-[820px] flex flex-col items-center justify-center min-w-0">
           
           {/* Main Holographic Terminal Window */}
           <div className="relative w-full rounded-xl bg-black/60 border border-cyan-500/40 backdrop-blur-md p-3 sm:p-4 shadow-[0_0_30px_rgba(0,240,255,0.15)] flex flex-col gap-3 group">
@@ -265,7 +500,7 @@ const Projects = () => {
                   <span className="text-[9px] sm:text-[10px]">ENLARGE HUD</span>
                 </button>
 
-                <div className="hidden sm:flex items-center gap-1 bg-cyan-950/40 px-2 py-1 rounded border border-cyan-500/20">
+                <div className="flex items-center gap-1 bg-cyan-950/40 px-2 py-1 rounded border border-cyan-500/20">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                   <span className="text-[9px]">LIVE</span>
                 </div>
@@ -288,7 +523,7 @@ const Projects = () => {
             <div className="relative w-full py-1.5 px-4 rounded-full bg-[#070e1a]/90 border border-cyan-400/50 shadow-[0_0_20px_rgba(0,240,255,0.4),inset_0_0_10px_rgba(255,0,127,0.3)] flex items-center justify-between text-[11px] font-mono">
               <div className="flex items-center gap-1.5 text-pink-400">
                 <span className="w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_6px_#ff007f] animate-ping" />
-                <span className="font-bold text-[10px] sm:text-xs tracking-wider">
+                <span className="font-bold text-xs tracking-wider">
                   PROJECT {selectedProject.number || `0${selectedIndex + 1}`} / {projects.length < 10 ? `0${projects.length}` : projects.length}
                 </span>
               </div>
@@ -307,10 +542,10 @@ const Projects = () => {
         {/* ======================================================== */}
         {/* COLUMN 3: RIGHT SIDEBAR - PROJECT SPECS & QUOTE          */}
         {/* ======================================================== */}
-        <div className="w-full lg:w-[310px] xl:w-[340px] shrink-0 flex flex-col justify-center space-y-2">
+        <div className="w-[310px] xl:w-[340px] shrink-0 flex flex-col justify-center space-y-2">
           
           {/* Project Details HUD Panel */}
-          <div className="bg-black/60 border border-cyan-500/30 rounded-xl p-2.5 sm:p-3 xl:p-3.5 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.5)] relative">
+          <div className="bg-black/60 border border-cyan-500/30 rounded-xl p-3 xl:p-3.5 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.5)] relative">
             
             {/* Top Specs Header */}
             <div className="flex items-center justify-between border-b border-cyan-500/20 pb-1.5 mb-1.5">
