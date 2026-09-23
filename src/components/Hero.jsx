@@ -399,19 +399,21 @@ const Hero = ({ onNavigate }) => {
 
           </div>
 
-          {/* 4. PRIMARY CTA BUTTON: VIEW PROJECTS */}
+          {/* 4. CYBERPUNK SCROLL / SWIPE RIGHT INDICATOR */}
           <button
             onClick={() => {
               playClickSound();
-              if (onNavigate) onNavigate('projects');
+              if (onNavigate) onNavigate('skills');
             }}
             onMouseEnter={playHoverSound}
-            className="relative group w-full max-w-[340px] py-2.5 px-4 bg-[#120719]/80 text-pink-400 font-orbitron font-bold text-xs xs:text-[13px] tracking-[0.2em] border border-pink-500 rounded-lg transition-all duration-300 active:scale-[0.98] hover:bg-pink-500 hover:text-black shadow-[0_0_15px_rgba(255,0,127,0.35),inset_0_0_8px_rgba(255,0,127,0.15)] hover:shadow-[0_0_25px_rgba(255,0,127,0.8)] overflow-hidden cursor-pointer"
+            className="relative group w-full max-w-[280px] py-2 px-5 bg-[#120719]/80 border border-pink-500/70 hover:border-pink-400 rounded-xl backdrop-blur-md shadow-[0_0_15px_rgba(255,0,127,0.3),inset_0_0_8px_rgba(255,0,127,0.12)] hover:shadow-[0_0_25px_rgba(255,0,127,0.7)] flex items-center justify-between transition-all duration-300 cursor-pointer active:scale-95 overflow-hidden"
           >
-            <span className="relative z-10 flex items-center justify-center gap-2.5">
-              <span>VIEW PROJECTS</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <span className="font-orbitron font-bold text-xs xs:text-[13px] text-pink-400 tracking-[0.25em] drop-shadow-[0_0_8px_rgba(255,0,127,0.7)] group-hover:text-white transition-colors">
+              SCROLL
             </span>
+            <div className="flex items-center text-pink-400 group-hover:text-white transition-colors">
+              <ArrowRight className="w-5 h-5 xs:w-6 xs:h-6 transition-transform group-hover:translate-x-1.5 drop-shadow-[0_0_8px_#ff007f]" />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </button>
 

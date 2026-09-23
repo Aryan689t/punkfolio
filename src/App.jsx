@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Skills from './components/Skills';
@@ -6,12 +6,52 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import HudStatus from './components/HudStatus';
 import CyberCanvas from './components/CyberCanvas';
+import { playClickSound } from './utils/audio';
+
+const TABS = ['home', 'skills', 'projects', 'contact'];
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    // Horizontal swipe detection with sensitivity threshold
+    if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      const currentIndex = TABS.indexOf(activeTab);
+      if (deltaX < 0) {
+        // Swiped Left -> Move to Next Page
+        if (currentIndex < TABS.length - 1) {
+          playClickSound();
+          setActiveTab(TABS[currentIndex + 1]);
+        }
+      } else {
+        // Swiped Right -> Move to Previous Page
+        if (currentIndex > 0) {
+          playClickSound();
+          setActiveTab(TABS[currentIndex - 1]);
+        }
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   return (
-    <div className="relative h-screen max-h-screen w-full text-slate-100 flex flex-col justify-between overflow-hidden select-none font-rajdhani bg-[#05070d]">
+    <div 
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className="relative h-screen max-h-screen w-full text-slate-100 flex flex-col justify-between overflow-hidden select-none font-rajdhani bg-[#05070d]"
+    >
       
       {/* Background Cyberpunk Pixel Artwork */}
       <div 
@@ -38,7 +78,7 @@ function App() {
       <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
 
       {/* Main Center Content (Dynamic SPA Switch) */}
-      <main className="flex-1 flex items-center justify-center relative z-20 my-auto py-1 sm:py-2 md:py-0 w-full overflow-y-auto md:overflow-hidden">
+      <main className="flex-1 flex items-center justify-center relative z-20 my-auto py-1 sm:py-2 md:py-0 w-full overflow-y-auto md:overflow-hidden touch-pan-y">
         {activeTab === 'home' && (
           <div className="w-full flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
             <Hero onNavigate={setActiveTab} />
