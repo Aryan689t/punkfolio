@@ -221,8 +221,13 @@ const Skills = ({ onNavigateBack }) => {
             </div>
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex items-center justify-start sm:justify-center gap-1.5 font-mono text-[9.5px] sm:text-[11px] overflow-x-auto no-scrollbar w-full sm:w-auto py-0.5 whitespace-nowrap">
+          {/* Category Filter Pills (Protected from global swipe navigation) */}
+          <div 
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
+            className="flex items-center justify-start sm:justify-center gap-1.5 font-mono text-[9.5px] sm:text-[11px] overflow-x-auto no-scrollbar w-full sm:w-auto py-0.5 whitespace-nowrap no-swipe-zone"
+          >
             {skillCategories.map((cat) => {
               const Icon = cat.icon;
               const isActive = activeCategory === cat.id;

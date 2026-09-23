@@ -16,17 +16,27 @@ function App() {
   const touchStartY = useRef(null);
 
   const handleTouchStart = (e) => {
+    if (e.target.closest('.overflow-x-auto, [data-no-swipe], .no-swipe-zone')) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e) => {
     if (touchStartX.current === null || touchStartY.current === null) return;
+    if (e.target.closest('.overflow-x-auto, [data-no-swipe], .no-swipe-zone')) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
     // Horizontal swipe detection with sensitivity threshold
-    if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
       const currentIndex = TABS.indexOf(activeTab);
       if (deltaX < 0) {
         // Swiped Left -> Move to Next Page
