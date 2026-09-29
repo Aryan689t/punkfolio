@@ -75,7 +75,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col items-center justify-center min-h-[calc(100vh-140px)] select-none">
+    <div className="relative w-full max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex flex-col items-center justify-start md:justify-center md:min-h-[calc(100vh-140px)] select-none">
       
       {/* Toast Notification */}
       {copiedToast && (
@@ -271,7 +271,7 @@ const Contact = () => {
           <div 
             className="absolute left-[380px] top-[205px] z-20 w-[240px] h-[130px] flex flex-col items-center justify-center px-4 py-3 bg-[#0a0f1d]/90 backdrop-blur-md rounded-2xl border border-pink-500/80 transition-all duration-300 shadow-[0_0_25px_rgba(255,0,127,0.5),inset_0_0_15px_rgba(255,0,127,0.2)] hover:shadow-[0_0_35px_rgba(255,0,127,0.8),inset_0_0_20px_rgba(255,0,127,0.3)] group cursor-default"
             style={{
-              clipPath: 'polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px)'
+              clipPath: 'polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 12px), 0 16px)'
             }}
             onMouseEnter={playHoverSound}
           >
@@ -436,28 +436,41 @@ const Contact = () => {
       {/* ========================================================================= */}
       {/* MOBILE RESPONSIVE LAYOUT (Stacked Mind Map for Screens < 768px)          */}
       {/* ========================================================================= */}
-      <div className="md:hidden w-full flex flex-col items-center gap-4 py-2 z-20">
+      <div className="md:hidden w-full max-w-md flex flex-col items-center gap-2 xs:gap-2.5 py-1 px-1 z-20 pb-8">
         
         {/* Central Hub Mobile */}
         <div 
-          className="w-full max-w-sm px-6 py-4 bg-[#0a0f1d]/90 backdrop-blur-md rounded-2xl border border-pink-500/80 shadow-[0_0_20px_rgba(255,0,127,0.5),inset_0_0_12px_rgba(255,0,127,0.2)] text-center relative"
+          className="w-full max-w-sm px-4 py-2.5 xs:py-3 bg-[#0a0f1d]/90 backdrop-blur-md rounded-2xl border border-pink-500/80 shadow-[0_0_20px_rgba(255,0,127,0.5),inset_0_0_12px_rgba(255,0,127,0.2)] text-center relative"
           style={{
-            clipPath: 'polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px)'
+            clipPath: 'polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)'
           }}
         >
-          <h2 className="font-orbitron font-black text-2xl text-pink-500 tracking-wider drop-shadow-[0_0_10px_rgba(255,0,127,0.8)] mb-2">
+          {/* Inner Accent Chamfer Border */}
+          <div 
+            className="absolute inset-[2px] border border-pink-500/25 pointer-events-none rounded-xl"
+            style={{
+              clipPath: 'polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)'
+            }}
+          />
+
+          <div className="flex items-center justify-center gap-1.5 mb-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-ping" />
+            <span className="font-mono text-[8px] text-pink-400 font-bold tracking-widest uppercase">// NEURAL PRESENCE //</span>
+          </div>
+
+          <h2 className="font-orbitron font-black text-lg xs:text-xl text-pink-500 tracking-wider drop-shadow-[0_0_10px_rgba(255,0,127,0.8)] leading-tight">
             DIGITAL PRESENCE
           </h2>
-          <div className="font-mono text-[8px] text-slate-400 tracking-widest uppercase">
+          <div className="font-mono text-[7.5px] xs:text-[8px] text-slate-400 tracking-widest uppercase mt-0.5">
             IDEAS • OPPORTUNITIES • COLLABORATION
           </div>
         </div>
 
         {/* Connector Stem */}
-        <div className="w-[2px] h-4 bg-gradient-to-b from-pink-500 to-cyan-400 shadow-[0_0_8px_#ff007f]" />
+        <div className="w-[2px] h-2.5 xs:h-3 bg-gradient-to-b from-pink-500 to-cyan-400 shadow-[0_0_8px_#ff007f]" />
 
         {/* Mobile Nodes Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-sm sm:max-w-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 xs:gap-2.5 w-full max-w-sm sm:max-w-xl">
           {contactLinks.map((node) => (
             <DesktopNodeCard 
               key={node.id} 
@@ -470,25 +483,25 @@ const Contact = () => {
 
         {/* Mobile Opportunities Banner */}
         <div 
-          className="w-full max-w-sm sm:max-w-xl p-3 bg-[#0a0f1d]/90 backdrop-blur-md rounded-xl border border-cyan-500/40 flex flex-col gap-2 shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+          className="w-full max-w-sm sm:max-w-xl p-2.5 xs:p-3 bg-[#0a0f1d]/90 backdrop-blur-md rounded-xl border border-cyan-500/40 flex flex-col gap-1.5 shadow-[0_0_15px_rgba(0,240,255,0.15)] mt-1"
           style={{
             clipPath: 'polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)'
           }}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
-              <span className="font-mono text-[9px] font-bold text-emerald-400 tracking-wider">
+              <span className="font-mono text-[8.5px] xs:text-[9px] font-bold text-emerald-400 tracking-wider">
                 OPEN TO OPPORTUNITIES
               </span>
             </div>
             <span className="font-mono text-[8px] text-slate-400">[2026]</span>
           </div>
 
-          <div className="flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <div className="flex flex-wrap gap-1.5 font-mono text-[8.5px] xs:text-[9px]">
             <span className="px-2 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-cyan-300">
               INTERNSHIPS
             </span>
@@ -511,9 +524,9 @@ const DesktopNodeCard = ({ node, onClick, isHovered }) => {
   return (
     <div
       onClick={() => onClick(node)}
-      className={`relative w-full px-4 py-3 bg-[#0a0f1d]/85 backdrop-blur-md rounded-2xl border transition-all duration-300 cursor-pointer group flex items-center gap-3.5 ${
+      className={`relative w-full px-3 py-2 xs:px-3.5 xs:py-2.5 sm:px-4 sm:py-3 bg-[#0a0f1d]/85 backdrop-blur-md rounded-2xl border transition-all duration-300 cursor-pointer group flex items-center gap-2.5 xs:gap-3.5 ${
         node.theme.border
-      } ${isHovered ? node.theme.hoverGlow + ' scale-[1.03]' : node.theme.glow}`}
+      } ${isHovered ? node.theme.hoverGlow + ' scale-[1.02]' : node.theme.glow}`}
       style={{
         clipPath: 'polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)'
       }}
@@ -528,17 +541,17 @@ const DesktopNodeCard = ({ node, onClick, isHovered }) => {
 
       {/* Node Icon Box with neon container */}
       <div 
-        className={`w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-300 ${node.theme.text}`}
+        className={`w-9 h-9 xs:w-10 xs:h-10 sm:w-11 sm:h-11 flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-300 ${node.theme.text}`}
       >
-        <NodeIcon type={node.icon} color="currentColor" className="w-7 h-7 drop-shadow-[0_0_6px_currentColor] group-hover:scale-110 transition-transform duration-300" />
+        <NodeIcon type={node.icon} color="currentColor" className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 drop-shadow-[0_0_6px_currentColor] group-hover:scale-110 transition-transform duration-300" />
       </div>
 
       {/* Node Details (Title & Handle) */}
       <div className="flex flex-col min-w-0 flex-1">
-        <div className={`font-orbitron font-bold text-xs tracking-wider uppercase ${node.theme.text} ${node.theme.textGlow}`}>
+        <div className={`font-orbitron font-bold text-[10.5px] xs:text-xs tracking-wider uppercase ${node.theme.text} ${node.theme.textGlow}`}>
           {node.title}
         </div>
-        <div className="font-mono text-[10.5px] leading-tight text-slate-300 group-hover:text-white truncate tracking-tight mt-0.5 transition-colors">
+        <div className="font-mono text-[9px] xs:text-[10px] sm:text-[10.5px] leading-tight text-slate-300 group-hover:text-white truncate tracking-tight mt-0.5 transition-colors">
           {node.handle}
         </div>
       </div>

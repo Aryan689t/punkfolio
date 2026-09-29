@@ -35,8 +35,8 @@ function App() {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
-    // Horizontal swipe detection with sensitivity threshold
-    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+    // Horizontal swipe detection with sensitivity threshold (strict against vertical scrolling)
+    if (Math.abs(deltaX) > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
       const currentIndex = TABS.indexOf(activeTab);
       if (deltaX < 0) {
         // Swiped Left -> Move to Next Page
@@ -88,27 +88,27 @@ function App() {
       <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
 
       {/* Main Center Content (Dynamic SPA Switch) */}
-      <main className="flex-1 flex items-center justify-center relative z-20 my-auto py-1 sm:py-2 md:py-0 w-full overflow-y-auto md:overflow-hidden touch-pan-y">
+      <main className="flex-1 w-full relative z-20 overflow-y-auto md:overflow-hidden touch-pan-y flex flex-col items-center justify-start md:justify-center py-1.5 sm:py-2 md:py-0">
         {activeTab === 'home' && (
-          <div className="w-full flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
+          <div className="w-full my-auto flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
             <Hero onNavigate={setActiveTab} />
           </div>
         )}
 
         {activeTab === 'skills' && (
-          <div className="w-full flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
+          <div className="w-full my-auto flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
             <Skills onNavigateBack={() => setActiveTab('home')} />
           </div>
         )}
 
         {activeTab === 'projects' && (
-          <div className="w-full flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
+          <div className="w-full my-auto flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
             <Projects />
           </div>
         )}
 
         {activeTab === 'contact' && (
-          <div className="w-full flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
+          <div className="w-full my-auto flex items-center justify-center animate-[fadeIn_0.3s_ease-out]">
             <Contact />
           </div>
         )}
