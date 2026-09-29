@@ -27,6 +27,7 @@ const ProjectVisual = ({ project }) => {
         />
 
         <img
+          key={screenshotSrc}
           src={screenshotSrc}
           alt={`${project.displayName || project.title} screenshot`}
           className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03] filter brightness-[0.93] contrast-[1.05] group-hover:brightness-100"

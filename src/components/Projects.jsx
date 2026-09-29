@@ -384,29 +384,18 @@ const Projects = () => {
                   <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded shrink-0 overflow-hidden border relative flex items-center justify-center bg-black/70 ${
                     isSelected ? 'border-pink-400 shadow-[0_0_8px_rgba(255,0,127,0.5)]' : 'border-cyan-500/30'
                   }`}>
-                    {proj.id === 'kisansetu' && (
-                      <div className="w-full h-full bg-gradient-to-br from-emerald-900/60 to-cyan-950/80 flex items-center justify-center text-emerald-400">
-                        <Sprout className="w-4 h-4" />
-                      </div>
-                    )}
-                    {proj.id === 'trackyour' && (
-                      <div className="w-full h-full bg-gradient-to-br from-cyan-900/60 to-blue-950/80 flex items-center justify-center text-cyan-400">
-                        <Cpu className="w-4 h-4" />
-                      </div>
-                    )}
-                    {proj.id === 'splitzy' && (
-                      <div className="w-full h-full bg-gradient-to-br from-yellow-900/60 to-orange-950/80 flex items-center justify-center text-yellow-400">
-                        <Layers className="w-4 h-4" />
-                      </div>
-                    )}
-                    {proj.id === 'punkfolio' && (
-                      <div className="w-full h-full bg-gradient-to-br from-pink-900/60 to-purple-950/80 flex items-center justify-center text-pink-400">
-                        <Code2 className="w-4 h-4" />
-                      </div>
-                    )}
-                    {proj.id === 'cyberguard' && (
-                      <div className="w-full h-full bg-gradient-to-br from-purple-900/60 to-black flex items-center justify-center text-purple-400">
-                        <Radio className="w-4 h-4" />
+                    {proj.screenshotUrl ? (
+                      <img 
+                        src={proj.screenshotUrl} 
+                        alt="" 
+                        className="w-full h-full object-cover object-top"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-cyan-900/60 to-purple-950/80 flex items-center justify-center text-cyan-400 font-mono text-[10px] font-bold">
+                        {proj.number || '01'}
                       </div>
                     )}
 
